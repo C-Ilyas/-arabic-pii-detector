@@ -1,0 +1,29 @@
+{
+  "hardware": {
+    "device": "cuda",
+    "torch_threads": 2,
+    "platform": "Linux-5.10.0-43-cloud-amd64-x86_64-with-glibc2.31",
+    "processor": "unknown",
+    "cuda_available": true
+  },
+  "batch_size": 1,
+  "max_input_length": 142,
+  "overall": {
+    "count": 200,
+    "mean_ms": 7.4,
+    "p50_ms": 7.35,
+    "p95_ms": 7.97,
+    "max_ms": 10.13
+  },
+  "by_length": {
+    "short (<=25 words)": {
+      "count": 200,
+      "mean_ms": 7.4,
+      "p50_ms": 7.35,
+      "p95_ms": 7.97,
+      "max_ms": 10.13
+    }
+  },
+  "target_ms": 150,
+  "within_target": true
+}

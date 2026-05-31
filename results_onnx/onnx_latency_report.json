@@ -1,0 +1,27 @@
+{
+  "hardware": {
+    "device": "cpu",
+    "platform": "Linux-6.17.0-29-generic-x86_64-with-glibc2.39",
+    "processor": "x86_64"
+  },
+  "model": "ONNX INT8 quantized",
+  "batch_size": 1,
+  "overall": {
+    "count": 200,
+    "mean_ms": 92.69,
+    "p50_ms": 76.07,
+    "p95_ms": 171.37,
+    "max_ms": 234.26
+  },
+  "by_length": {
+    "short (<=25 words)": {
+      "count": 200,
+      "mean_ms": 92.69,
+      "p50_ms": 76.07,
+      "p95_ms": 171.37,
+      "max_ms": 234.26
+    }
+  },
+  "target_ms": 150,
+  "within_target": false
+}

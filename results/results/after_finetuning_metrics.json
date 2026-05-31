@@ -1,0 +1,348 @@
+{
+  "overall": {
+    "precision": 0.9907,
+    "recall": 0.9924,
+    "f1": 0.9916,
+    "exact_match_tp": 2232,
+    "exact_match_fp": 21,
+    "exact_match_fn": 17
+  },
+  "per_class": {
+    "IBAN": {
+      "precision": 0.9906,
+      "recall": 1.0,
+      "f1": 0.9953,
+      "support": 317
+    },
+    "BANK_ACCOUNT_NUMBER": {
+      "precision": 0.9681,
+      "recall": 1.0,
+      "f1": 0.9838,
+      "support": 273
+    },
+    "ACCOUNT_NUMBER": {
+      "precision": 0.9903,
+      "recall": 0.9579,
+      "f1": 0.9739,
+      "support": 214
+    },
+    "ADDRESS": {
+      "precision": 0.9899,
+      "recall": 0.9899,
+      "f1": 0.9899,
+      "support": 296
+    },
+    "PERSON": {
+      "precision": 0.9961,
+      "recall": 0.9961,
+      "f1": 0.9961,
+      "support": 516
+    },
+    "PHONE_NUMBER": {
+      "precision": 0.9943,
+      "recall": 0.9914,
+      "f1": 0.9928,
+      "support": 350
+    },
+    "EMAIL": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 283
+    }
+  },
+  "partial_match_recall": 0.9964,
+  "error_examples": {
+    "false_positives": [],
+    "false_negatives": [],
+    "boundary_errors": [
+      {
+        "text": "اسم المستفيد: ياسمين وليد، الآيبان: QA370290061033421066285531473، الهاتف: +٩٧١ ٥٠٣١٠١٢٥٥، العنوان: 217 شارع محمد بلوزداد، النهضة، الكويت.",
+        "gold": {
+          "text": "217 شارع محمد بلوزداد، النهضة، الكويت",
+          "label": "ADDRESS",
+          "start": 100,
+          "end": 137
+        },
+        "pred": {
+          "text": "217 شارع محمد بلوزداد، النهضة",
+          "label": "ADDRESS",
+          "start": 100,
+          "end": 129
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك ٣٠٨١٥٢٩٤٦٤ للمتابعة.",
+        "gold": {
+          "text": "٣٠٨١٥٢٩٤٦٤",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "٣٠٨",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 18
+        }
+      },
+      {
+        "text": "اسم المستفيد: Warda Farouk، الآيبان: AE520916651396563064797، الهاتف: +7397452870، العنوان: شارع الجلاء، الأبيار، عمّان.",
+        "gold": {
+          "text": "شارع الجلاء، الأبيار، عمّان",
+          "label": "ADDRESS",
+          "start": 92,
+          "end": 119
+        },
+        "pred": {
+          "text": "شارع الجلاء، الأبيار",
+          "label": "ADDRESS",
+          "start": 92,
+          "end": 112
+        }
+      },
+      {
+        "text": "المستفيد سميرة سميرة بن عبدالله — آيبان: AE56 3150 7983 9384 2680 212 — هاتف: +٢١٣-٥٥٣٣٤٣١١٩.",
+        "gold": {
+          "text": "سميرة سميرة بن عبدالله",
+          "label": "PERSON",
+          "start": 9,
+          "end": 31
+        },
+        "pred": {
+          "text": "سميرة بن عبدالله",
+          "label": "PERSON",
+          "start": 15,
+          "end": 31
+        }
+      },
+      {
+        "text": "ياسر خالد بن شيخ مقيم في ٢٠١ شارع الجلاء، باب الوادي، تلمسان، للتواصل: m.hassan@outlook.com.",
+        "gold": {
+          "text": "ياسر خالد بن شيخ",
+          "label": "PERSON",
+          "start": 0,
+          "end": 16
+        },
+        "pred": {
+          "text": "خالد بن شيخ",
+          "label": "PERSON",
+          "start": 5,
+          "end": 16
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 1744668727 للمتابعة.",
+        "gold": {
+          "text": "1744668727",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "174",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 18
+        }
+      },
+      {
+        "text": "المستفيد Sofiane Ali — آيبان: EG809449220827724254244036604 — هاتف: 01179846888.",
+        "gold": {
+          "text": "01179846888",
+          "label": "PHONE_NUMBER",
+          "start": 68,
+          "end": 79
+        },
+        "pred": {
+          "text": "01",
+          "label": "PHONE_NUMBER",
+          "start": 68,
+          "end": 70
+        }
+      },
+      {
+        "text": "اسم المستفيد: كريم وفاء حداد، الآيبان: JO4147590204666139795744948504، الهاتف: 01539603523، العنوان: ٩٥ شارع الاستقلال، النهضة، الكويت.",
+        "gold": {
+          "text": "٩٥ شارع الاستقلال، النهضة، الكويت",
+          "label": "ADDRESS",
+          "start": 101,
+          "end": 134
+        },
+        "pred": {
+          "text": "٩٥ شارع الاستقلال، النهضة",
+          "label": "ADDRESS",
+          "start": 101,
+          "end": 126
+        }
+      },
+      {
+        "text": "المستفيد Mostafa Bouzid — آيبان: JO8905690484336195114727290431 — هاتف: 01575512565.",
+        "gold": {
+          "text": "01575512565",
+          "label": "PHONE_NUMBER",
+          "start": 72,
+          "end": 83
+        },
+        "pred": {
+          "text": "0157551256",
+          "label": "PHONE_NUMBER",
+          "start": 72,
+          "end": 82
+        }
+      }
+    ],
+    "wrong_labels": [
+      {
+        "text": "أدخل رقم حسابك 767548726 للمتابعة.",
+        "gold": {
+          "text": "767548726",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 24
+        },
+        "pred": {
+          "text": "767548726",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 24
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك ٣٠٨١٥٢٩٤٦٤ للمتابعة.",
+        "gold": {
+          "text": "٣٠٨١٥٢٩٤٦٤",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "١٥٢٩٤٦٤",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 18,
+          "end": 25
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 4525723886 للمتابعة.",
+        "gold": {
+          "text": "4525723886",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "4525723886",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 5998140383 للمتابعة.",
+        "gold": {
+          "text": "5998140383",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "5998140383",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 4952803711 للمتابعة.",
+        "gold": {
+          "text": "4952803711",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "4952803711",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 1744668727 للمتابعة.",
+        "gold": {
+          "text": "1744668727",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "4668727",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 18,
+          "end": 25
+        }
+      },
+      {
+        "text": "المستفيد Dalila Meziane — آيبان: KW2149329300647299805068090751 — هاتف: ٠٥٨٣٥٣٦٦٧٦.",
+        "gold": {
+          "text": "٠٥٨٣٥٣٦٦٧٦",
+          "label": "PHONE_NUMBER",
+          "start": 72,
+          "end": 82
+        },
+        "pred": {
+          "text": "٠٥٨٣٥٣٦٦٧٦",
+          "label": "IBAN",
+          "start": 72,
+          "end": 82
+        }
+      },
+      {
+        "text": "المستفيد Sofiane Ali — آيبان: EG809449220827724254244036604 — هاتف: 01179846888.",
+        "gold": {
+          "text": "01179846888",
+          "label": "PHONE_NUMBER",
+          "start": 68,
+          "end": 79
+        },
+        "pred": {
+          "text": "179846888",
+          "label": "IBAN",
+          "start": 70,
+          "end": 79
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 9925219403 للمتابعة.",
+        "gold": {
+          "text": "9925219403",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "9925219403",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        }
+      },
+      {
+        "text": "أدخل رقم حسابك 3562211428 للمتابعة.",
+        "gold": {
+          "text": "3562211428",
+          "label": "ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        },
+        "pred": {
+          "text": "3562211428",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 15,
+          "end": 25
+        }
+      }
+    ]
+  }
+}

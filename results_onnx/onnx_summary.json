@@ -1,0 +1,15 @@
+{
+  "model": "ONNX INT8 quantized (CPU)",
+  "test_size": 2000,
+  "f1": 0.9916,
+  "precision": 0.9907,
+  "recall": 0.9924,
+  "latency_p50_ms": 76.07,
+  "latency_p95_ms": 171.37,
+  "within_150ms_target": false,
+  "hardware": {
+    "device": "cpu",
+    "platform": "Linux-6.17.0-29-generic-x86_64-with-glibc2.39",
+    "processor": "x86_64"
+  }
+}

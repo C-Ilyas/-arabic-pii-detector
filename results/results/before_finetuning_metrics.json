@@ -1,0 +1,454 @@
+{
+  "overall": {
+    "precision": 0.0003,
+    "recall": 0.0036,
+    "f1": 0.0006,
+    "exact_match_tp": 8,
+    "exact_match_fp": 26161,
+    "exact_match_fn": 2241
+  },
+  "per_class": {
+    "PERSON": {
+      "precision": 0.0018,
+      "recall": 0.0136,
+      "f1": 0.0032,
+      "support": 516
+    },
+    "ACCOUNT_NUMBER": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 214
+    },
+    "PHONE_NUMBER": {
+      "precision": 0.0001,
+      "recall": 0.0029,
+      "f1": 0.0003,
+      "support": 350
+    },
+    "ADDRESS": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 296
+    },
+    "EMAIL": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 283
+    },
+    "IBAN": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 317
+    },
+    "BANK_ACCOUNT_NUMBER": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 273
+    }
+  },
+  "partial_match_recall": 0.6394,
+  "error_examples": {
+    "false_positives": [
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "الرقم",
+          "label": "PERSON",
+          "start": 0,
+          "end": 5
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "I",
+          "label": "PERSON",
+          "start": 32,
+          "end": 33
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "0012",
+          "label": "ACCOUNT_NUMBER",
+          "start": 43,
+          "end": 47
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "التعريف",
+          "label": "PHONE_NUMBER",
+          "start": 6,
+          "end": 13
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "N",
+          "label": "PHONE_NUMBER",
+          "start": 31,
+          "end": 32
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "للمؤسسة",
+          "label": "ADDRESS",
+          "start": 22,
+          "end": 29
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "09",
+          "label": "PERSON",
+          "start": 37,
+          "end": 39
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "34",
+          "label": "ADDRESS",
+          "start": 47,
+          "end": 49
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "7",
+          "label": "PHONE_NUMBER",
+          "start": 51,
+          "end": 52
+        }
+      },
+      {
+        "text": "الرقم التعريفي الوطني للمؤسسة (NIF): 099916001234567.",
+        "pred": {
+          "text": "ي",
+          "label": "PHONE_NUMBER",
+          "start": 13,
+          "end": 14
+        }
+      }
+    ],
+    "false_negatives": [],
+    "boundary_errors": [
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "150",
+          "label": "IBAN",
+          "start": 59,
+          "end": 62
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "5949",
+          "label": "IBAN",
+          "start": 64,
+          "end": 68
+        }
+      },
+      {
+        "text": "اسم المستفيد: سهيلة بدر كريمة، الآيبان: EG852205703235736017317776502، الهاتف: +971567263793، العنوان: 171 شارع زيغود يوسف، باب الزوار، أسيوط.",
+        "gold": {
+          "text": "+971567263793",
+          "label": "PHONE_NUMBER",
+          "start": 79,
+          "end": 92
+        },
+        "pred": {
+          "text": "26",
+          "label": "PHONE_NUMBER",
+          "start": 86,
+          "end": 88
+        }
+      },
+      {
+        "text": "اسم المستفيد: سهيلة بدر كريمة، الآيبان: EG852205703235736017317776502، الهاتف: +971567263793، العنوان: 171 شارع زيغود يوسف، باب الزوار، أسيوط.",
+        "gold": {
+          "text": "171 شارع زيغود يوسف، باب الزوار، أسيوط",
+          "label": "ADDRESS",
+          "start": 103,
+          "end": 141
+        },
+        "pred": {
+          "text": "أسيوط",
+          "label": "ADDRESS",
+          "start": 136,
+          "end": 141
+        }
+      },
+      {
+        "text": "يمكن إرسال وثائق التسجيل إلى contact@yahoo.com مباشرة.",
+        "gold": {
+          "text": "contact@yahoo.com",
+          "label": "EMAIL",
+          "start": 29,
+          "end": 46
+        },
+        "pred": {
+          "text": "@",
+          "label": "EMAIL",
+          "start": 36,
+          "end": 37
+        }
+      },
+      {
+        "text": "سيتم انعقاد الفعالية في 174 شارع بن مهيدي، العليا، الدوحة على الساعة العاشرة صباحاً.",
+        "gold": {
+          "text": "174 شارع بن مهيدي، العليا، الدوحة",
+          "label": "ADDRESS",
+          "start": 24,
+          "end": 57
+        },
+        "pred": {
+          "text": "شارع",
+          "label": "ADDRESS",
+          "start": 28,
+          "end": 32
+        }
+      },
+      {
+        "text": "زهرة نجوى زهرة مقيم في ٢٤٥ شارع ديدوش مراد، العليا، الجزائر العاصمة، للتواصل: hello@univ-alger.dz.",
+        "gold": {
+          "text": "hello@univ-alger.dz",
+          "label": "EMAIL",
+          "start": 78,
+          "end": 97
+        },
+        "pred": {
+          "text": "@",
+          "label": "EMAIL",
+          "start": 83,
+          "end": 84
+        }
+      },
+      {
+        "text": "زهرة نجوى زهرة مقيم في ٢٤٥ شارع ديدوش مراد، العليا، الجزائر العاصمة، للتواصل: hello@univ-alger.dz.",
+        "gold": {
+          "text": "٢٤٥ شارع ديدوش مراد، العليا، الجزائر العاصمة",
+          "label": "ADDRESS",
+          "start": 23,
+          "end": 67
+        },
+        "pred": {
+          "text": "في ٢٤٥ شارع",
+          "label": "ADDRESS",
+          "start": 20,
+          "end": 31
+        }
+      },
+      {
+        "text": "للتواصل مع الدعم الفني راسلنا على user112@gmail.com في أي وقت.",
+        "gold": {
+          "text": "user112@gmail.com",
+          "label": "EMAIL",
+          "start": 34,
+          "end": 51
+        },
+        "pred": {
+          "text": "se",
+          "label": "EMAIL",
+          "start": 35,
+          "end": 37
+        }
+      },
+      {
+        "text": "للتواصل مع الدعم الفني راسلنا على user112@gmail.com في أي وقت.",
+        "gold": {
+          "text": "user112@gmail.com",
+          "label": "EMAIL",
+          "start": 34,
+          "end": 51
+        },
+        "pred": {
+          "text": "r",
+          "label": "EMAIL",
+          "start": 37,
+          "end": 38
+        }
+      }
+    ],
+    "wrong_labels": [
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "BH",
+          "label": "PERSON",
+          "start": 44,
+          "end": 46
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "01",
+          "label": "PERSON",
+          "start": 56,
+          "end": 58
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "67",
+          "label": "ACCOUNT_NUMBER",
+          "start": 49,
+          "end": 51
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "5",
+          "label": "PERSON",
+          "start": 62,
+          "end": 63
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "12",
+          "label": "ACCOUNT_NUMBER",
+          "start": 69,
+          "end": 71
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "38",
+          "label": "PHONE_NUMBER",
+          "start": 46,
+          "end": 48
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "72",
+          "label": "PERSON",
+          "start": 51,
+          "end": 53
+        }
+      },
+      {
+        "text": "يُرجى تحويل المبلغ المستحق إلى الرقم الدولي BH38 6772 7101 1505 5949 12.",
+        "gold": {
+          "text": "BH38 6772 7101 1505 5949 12",
+          "label": "IBAN",
+          "start": 44,
+          "end": 71
+        },
+        "pred": {
+          "text": "71",
+          "label": "ADDRESS",
+          "start": 54,
+          "end": 56
+        }
+      },
+      {
+        "text": "معرّف المستخدم ٠٧٤١٣٩٤٤ مختلف عن رقم الحساب البنكي ١٦١٣٧٣١٢٩٧٥٧٧٠٠.",
+        "gold": {
+          "text": "١٦١٣٧٣١٢٩٧٥٧٧٠٠",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 51,
+          "end": 66
+        },
+        "pred": {
+          "text": "٧٥",
+          "label": "PHONE_NUMBER",
+          "start": 60,
+          "end": 62
+        }
+      },
+      {
+        "text": "معرّف المستخدم ٠٧٤١٣٩٤٤ مختلف عن رقم الحساب البنكي ١٦١٣٧٣١٢٩٧٥٧٧٠٠.",
+        "gold": {
+          "text": "١٦١٣٧٣١٢٩٧٥٧٧٠٠",
+          "label": "BANK_ACCOUNT_NUMBER",
+          "start": 51,
+          "end": 66
+        },
+        "pred": {
+          "text": "١٦١٣٧٣١٢٩",
+          "label": "PERSON",
+          "start": 51,
+          "end": 60
+        }
+      }
+    ]
+  }
+}
