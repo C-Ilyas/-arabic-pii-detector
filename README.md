@@ -22,6 +22,7 @@ Fine-tuned BERT-based model that detects PII (Personally Identifiable Informatio
 .
 ├── README.md
 ├── requirements.txt
+├── app.py                   # FastAPI app (web UI + JSON API)
 ├── data/
 │   ├── train.jsonl          # 50,000 examples
 │   ├── validation.jsonl     # 2,000 examples (held-out templates)
@@ -55,12 +56,45 @@ python scripts/prepare_data.py
 # 3. Fine-tune (uses configs/training_config.yaml)
 python scripts/train.py
 
-# 4. Run inference on a sentence
+# 4. Run inference on a sentence (add --onnx to use the CPU ONNX model)
 python scripts/infer.py --text "اسمي محمد أحمد ورقم تليفوني 01012345678" --pretty
 
 # 5. Benchmark base vs fine-tuned + measure latency
 python scripts/benchmark.py
+
+# 6. (Optional) Launch the interactive web app
+python -m uvicorn app:app --port 8000
 ```
+
+## Running Inference
+
+`scripts/infer.py` runs the detector on a single string, a file, or stdin and prints JSON
+(`redacted_text` + `entities`).
+
+```bash
+# PyTorch model (default) — models/arabic-pii-detector
+python scripts/infer.py --text "اسمي محمد أحمد ورقم تليفوني 01012345678" --pretty
+
+# ONNX INT8 model (CPU) — models/arabic-pii-detector-onnx
+python scripts/infer.py --onnx --text "اسمي محمد أحمد ورقم تليفوني 01012345678" --pretty
+
+# Read from a file or stdin
+python scripts/infer.py --file input.txt --pretty
+echo "رقم تليفوني 01012345678" | python scripts/infer.py --pretty
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `--text` | — | Text to analyze (omit to read from `--file` or stdin) |
+| `--file` | — | Read input text from a file |
+| `--onnx` | off | Use the ONNX INT8 model (`models/arabic-pii-detector-onnx`, CPU-only) |
+| `--model` | auto | Override the model path (defaults to the PyTorch or ONNX dir based on `--onnx`) |
+| `--device` | auto | `cuda` / `cpu` (PyTorch backend only) |
+| `--max-length` | `256` | Max input tokens |
+| `--pretty` | off | Pretty-print the JSON output |
+
+> The ONNX backend requires `optimum[onnxruntime]` (already in `requirements.txt`) and is
+> imported lazily, so PyTorch-only users don't need it installed.
 
 ## Inference Examples
 
@@ -97,6 +131,37 @@ python scripts/infer.py --text "رقم الآيبان هو DZ4400799000001234567
 ```bash
 python scripts/infer.py --text "العنوان: ١٢ شارع التحرير، الدقي، الجيزة" --pretty
 ```
+
+## Web App (FastAPI)
+
+For interactive testing there's a small FastAPI app (`app.py`) with a browser UI and a JSON API.
+
+```bash
+# Start the server (auto-picks PyTorch if present, else the ONNX model)
+python -m uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+```
+
+Then open **http://127.0.0.1:8000** — paste text or pick a ready-made example, and see the
+redacted output, detected entities (with confidence and offsets), and the inference time.
+
+Endpoints:
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/` | Web UI |
+| `POST` | `/detect` | `{"text": "...", "max_length": 256}` → `{redacted_text, entities[], inference_ms}` |
+| `GET` | `/examples` | Built-in test examples |
+| `GET` | `/health` | Active backend + model path |
+
+```bash
+curl -X POST http://127.0.0.1:8000/detect \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"راني سفيان بوزيد ورقمي 0698123456 من الجزائر العاصمة"}'
+```
+
+Backend selection is automatic (PyTorch if `models/arabic-pii-detector` exists, otherwise the
+ONNX model). Override with environment variables: `PII_BACKEND=torch|onnx|auto` and
+`PII_MODEL=<path>`.
 
 ## Dataset Creation
 

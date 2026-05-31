@@ -14,3 +14,5 @@ onnxruntime>=1.17.0
 optimum[onnxruntime]>=2.1.0
 huggingface-hub>=0.20.0
 python-dotenv>=0.21.0
+fastapi>=0.110.0
+uvicorn>=0.29.0

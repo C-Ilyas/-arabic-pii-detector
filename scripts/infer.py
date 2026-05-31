@@ -131,14 +131,21 @@ def bio_decode_to_spans(
 
 # MAIN INFERENCE
 class PIIDetector:
-    def __init__(self, model_path: str, device: Optional[str] = None):
+    def __init__(self, model_path: str, device: Optional[str] = None, onnx: bool = False):
+        self.onnx = onnx
         self.tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
-        self.model = AutoModelForTokenClassification.from_pretrained(model_path)
-        if device is None:
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.device = device
-        self.model.to(device)
-        self.model.eval()
+        if onnx:
+            # ONNX runtime is CPU-only here; lazy import so torch-only users don't need optimum.
+            from optimum.onnxruntime import ORTModelForTokenClassification
+            self.model = ORTModelForTokenClassification.from_pretrained(model_path)
+            self.device = "cpu"
+        else:
+            self.model = AutoModelForTokenClassification.from_pretrained(model_path)
+            if device is None:
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+            self.device = device
+            self.model.to(device)
+            self.model.eval()
         self.id2label = self.model.config.id2label
 
     @torch.inference_mode()
@@ -216,12 +223,20 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--text", type=str, default=None, help="Text to analyze")
     parser.add_argument("--file", type=str, default=None, help="Read text from file")
-    parser.add_argument("--model", type=str, default="models/arabic-pii-detector",
-                        help="Path to fine-tuned model")
+    parser.add_argument("--model", type=str, default=None,
+                        help="Path to fine-tuned model (defaults to the PyTorch or ONNX "
+                             "model dir depending on --onnx)")
+    parser.add_argument("--onnx", action="store_true",
+                        help="Use the ONNX INT8 model in models/arabic-pii-detector-onnx (CPU)")
     parser.add_argument("--device", type=str, default=None)
     parser.add_argument("--max-length", type=int, default=256)
     parser.add_argument("--pretty", action="store_true", help="Pretty-print JSON")
     args = parser.parse_args()
+
+    # Default model path depends on the backend.
+    if args.model is None:
+        args.model = ("models/arabic-pii-detector-onnx" if args.onnx
+                      else "models/arabic-pii-detector")
 
     # Get input text
     if args.text:
@@ -235,7 +250,7 @@ def main():
         print(json.dumps({"redacted_text": "", "entities": []}, ensure_ascii=False))
         return
 
-    detector = PIIDetector(args.model, device=args.device)
+    detector = PIIDetector(args.model, device=args.device, onnx=args.onnx)
     result = detector.predict(text, max_length=args.max_length)
 
     if args.pretty:
