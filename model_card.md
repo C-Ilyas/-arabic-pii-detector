@@ -14,22 +14,21 @@ license: apache-2.0
 base_model: aubmindlab/bert-base-arabertv02
 pipeline_tag: token-classification
 ---
-
 # Arabic PII Detector
 
 Fine-tuned token classification model that detects Personally Identifiable Information (PII) in Arabic, English, and mixed Arabic/English text. Covers Modern Standard Arabic, Gulf, Egyptian, and Algerian dialects.
 
 ## Detected Entity Types
 
-| Tag | Description |
-|---|---|
-| `PERSON` | Full name / person name |
-| `EMAIL` | Email address |
-| `PHONE_NUMBER` | Phone number |
-| `ADDRESS` | Physical address |
-| `ACCOUNT_NUMBER` | Account number (internal / short) |
+| Tag                     | Description                          |
+| ----------------------- | ------------------------------------ |
+| `PERSON`              | Full name / person name              |
+| `EMAIL`               | Email address                        |
+| `PHONE_NUMBER`        | Phone number                         |
+| `ADDRESS`             | Physical address                     |
+| `ACCOUNT_NUMBER`      | Account number (internal / short)    |
 | `BANK_ACCOUNT_NUMBER` | Bank account number (longer numeric) |
-| `IBAN` | International Bank Account Number |
+| `IBAN`                | International Bank Account Number    |
 
 ## Base Model
 
@@ -41,7 +40,7 @@ Fine-tuned token classification model that detects Personally Identifiable Infor
 - CPU ONNX INT8 expected p95 ~60–90ms — well within the <150ms latency budget
 - Has safetensors format ✓
 
-**Why not bert-large?** `aubmindlab/bert-large-arabertv02` (340M params) was tested first and achieved F1=0.9581, but failed the CPU latency target (p95=239ms with ONNX INT8 on AMD Ryzen 5 3500U). bert-base achieves higher F1 (0.9916) with far lower latency.
+**Why not bert-large?** `aubmindlab/bert-large-arabertv02` (340M params) was tested first and achieved F1=0.9581, but failed the CPU latency target (p95=239ms with ONNX INT8 on AMD Ryzen 5 3500U)
 
 **Why not mdeberta-v3-base?** DeBERTa's disentangled attention adds CPU overhead — estimated p95 ~150–250ms, borderline at best. Not worth the complexity.
 
@@ -60,15 +59,16 @@ Fine-tuned token classification model that detects Personally Identifiable Infor
 
 **Evaluation split strategy**: All three splits (train/val/test) use structurally distinct held-out templates. Val and test templates are of equal difficulty — a mix of simple, ambiguous, and hard multi-entity cases (up to 4 entities), including the `ACCOUNT_NUMBER` vs `BANK_ACCOUNT_NUMBER` confusion pair in both pools. This ensures val F1 during training is honest and comparable to test F1.
 
-| Split | Examples | Templates |
-|---|---|---|
-| train | 50,000 | ~110 (from TEMPLATES pool) |
-| validation | 2,000 | 21 (VAL_ONLY_TEMPLATES, held-out) |
-| test | 2,000 | 21 (TEST_ONLY_TEMPLATES, held-out) |
+| Split      | Examples | Templates                          |
+| ---------- | -------- | ---------------------------------- |
+| train      | 50,000   | ~110 (from TEMPLATES pool)         |
+| validation | 2,000    | 21 (VAL_ONLY_TEMPLATES, held-out)  |
+| test       | 2,000    | 21 (TEST_ONLY_TEMPLATES, held-out) |
 
 ## Label Schema
 
 BIO tagging scheme with 15 labels:
+
 ```
 O, B-PERSON, I-PERSON, B-EMAIL, I-EMAIL,
 B-PHONE_NUMBER, I-PHONE_NUMBER, B-ADDRESS, I-ADDRESS,
@@ -81,21 +81,21 @@ B-IBAN, I-IBAN
 
 **Training hardware**: NVIDIA Tesla T4 GPU (Google Colab)
 
-| Hyperparameter | Value | Reasoning |
-|---|---|---|
-| Base model | aubmindlab/bert-base-arabertv02 | |
-| Epochs | 12 (early stopping) | Ceiling — early stopping finds the peak |
-| Early stopping patience | 3 | Cosine schedule can dip before recovering |
-| Batch size | 32 | bert-base fits larger batches; more stable gradients |
-| Learning rate | 3e-5 | bert-base needs higher lr than bert-large |
-| LR scheduler | **Cosine** | Stays near peak lr longer, then decays smoothly — outperforms linear on NER by 0.5–1.5 F1 points |
-| Warmup ratio | 0.06 | Short warmup; over-warming wastes steps with 50K examples |
-| Weight decay | 0.01 | Standard for bert-base; 0.1 (used for bert-large) caused underfit |
-| Label smoothing | 0.0 | bert-base is underconfident; smoothing hurt recall |
-| Max sequence length | 256 | |
-| Optimizer | AdamW | |
-| fp16 | true (GPU training) | |
-| Seed | 42 | |
+| Hyperparameter          | Value                           | Reasoning                                                                                          |
+| ----------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Base model              | aubmindlab/bert-base-arabertv02 |                                                                                                    |
+| Epochs                  | 12 (early stopping)             | Ceiling — early stopping finds the peak                                                           |
+| Early stopping patience | 3                               | Cosine schedule can dip before recovering                                                          |
+| Batch size              | 32                              | bert-base fits larger batches; more stable gradients                                               |
+| Learning rate           | 3e-5                            | bert-base needs higher lr than bert-large                                                          |
+| LR scheduler            | **Cosine**                | Stays near peak lr longer, then decays smoothly — outperforms linear on NER by 0.5–1.5 F1 points |
+| Warmup ratio            | 0.06                            | Short warmup; over-warming wastes steps with 50K examples                                          |
+| Weight decay            | 0.01                            | Standard for bert-base; 0.1 (used for bert-large) caused underfit                                  |
+| Label smoothing         | 0.0                             | bert-base is underconfident; smoothing hurt recall                                                 |
+| Max sequence length     | 256                             |                                                                                                    |
+| Optimizer               | AdamW                           |                                                                                                    |
+| fp16                    | true (GPU training)             |                                                                                                    |
+| Seed                    | 42                              |                                                                                                    |
 
 **Key insight**: hyperparameters differ deliberately from bert-large. bert-large (340M params) needed heavy regularization (weight_decay=0.1, dropout=0.2, label_smoothing=0.1) to prevent overfitting synthetic data. Applying those same settings to bert-base (135M params) caused underfit — the smaller model needs lighter regularization and a higher learning rate to reach its capacity ceiling.
 
@@ -116,28 +116,29 @@ B-IBAN, I-IBAN
 
 Evaluated on 2000 examples using **held-out templates never seen during training**:
 
-| Class | Precision | Recall | F1 | Support |
-|---|---|---|---|---|
-| EMAIL | 1.000 | 1.000 | 1.000 | 283 |
-| PERSON | 0.996 | 0.996 | 0.996 | 516 |
-| IBAN | 0.991 | 1.000 | 0.995 | 317 |
-| PHONE_NUMBER | 0.994 | 0.991 | 0.993 | 350 |
-| BANK_ACCOUNT_NUMBER | 0.968 | 1.000 | 0.984 | 273 |
-| ACCOUNT_NUMBER | 0.990 | 0.958 | 0.974 | 214 |
-| ADDRESS | 0.990 | 0.990 | 0.990 | 296 |
-| **Overall** | | | **0.9916** | |
+| Class               | Precision | Recall | F1               | Support |
+| ------------------- | --------- | ------ | ---------------- | ------- |
+| EMAIL               | 1.000     | 1.000  | 1.000            | 283     |
+| PERSON              | 0.996     | 0.996  | 0.996            | 516     |
+| IBAN                | 0.991     | 1.000  | 0.995            | 317     |
+| PHONE_NUMBER        | 0.994     | 0.991  | 0.993            | 350     |
+| BANK_ACCOUNT_NUMBER | 0.968     | 1.000  | 0.984            | 273     |
+| ACCOUNT_NUMBER      | 0.990     | 0.958  | 0.974            | 214     |
+| ADDRESS             | 0.990     | 0.990  | 0.990            | 296     |
+| **Overall**   |           |        | **0.9916** |         |
 
-| Metric | Before fine-tuning | PyTorch (T4 GPU) | ONNX INT8 (Ryzen 5 CPU) |
-|---|---|---|---|
-| Overall F1 | 0.0006 | **0.9916** | **0.9916** |
-| Val F1 | — | 0.9682 | — |
-| Precision | — | 0.9907 | 0.9907 |
-| Recall | — | 0.9924 | 0.9924 |
-| Latency p50 | — | 7.35ms | 57.29ms |
-| Latency p95 | — | 7.97ms | **96.38ms** |
-| Within 150ms | — | ✓ | ✓ |
+| Metric       | Before fine-tuning | PyTorch (T4 GPU) | ONNX INT8 (Ryzen 5 CPU) |
+| ------------ | ------------------ | ---------------- | ----------------------- |
+| Overall F1   | 0.0006             | **0.9916** | **0.9916**        |
+| Val F1       | —                 | 0.9682           | —                      |
+| Precision    | —                 | 0.9907           | 0.9907                  |
+| Recall       | —                 | 0.9924           | 0.9924                  |
+| Latency p50  | —                 | 7.35ms           | 57.29ms                 |
+| Latency p95  | —                 | 7.97ms           | **96.38ms**       |
+| Within 150ms | —                 | ✓               | ✓                      |
 
 **Hardware notes**:
+
 - Training + GPU benchmark: NVIDIA Tesla T4 (Google Colab)
 - CPU benchmark: ThinkPad AMD Ryzen 5 3500U, 4 cores, no discrete GPU — typical CPU-only deployment machine
 - ONNX quantization uses AVX2 config (matches Ryzen 5 3500U instruction set — not AVX-512 which would silently fall back to a slower path)
