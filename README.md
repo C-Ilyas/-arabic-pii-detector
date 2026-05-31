@@ -83,15 +83,15 @@ python scripts/infer.py --file input.txt --pretty
 echo "رقم تليفوني 01012345678" | python scripts/infer.py --pretty
 ```
 
-| Flag | Default | Description |
-|---|---|---|
-| `--text` | — | Text to analyze (omit to read from `--file` or stdin) |
-| `--file` | — | Read input text from a file |
-| `--onnx` | off | Use the ONNX INT8 model (`models/arabic-pii-detector-onnx`, CPU-only) |
-| `--model` | auto | Override the model path (defaults to the PyTorch or ONNX dir based on `--onnx`) |
-| `--device` | auto | `cuda` / `cpu` (PyTorch backend only) |
-| `--max-length` | `256` | Max input tokens |
-| `--pretty` | off | Pretty-print the JSON output |
+| Flag             | Default | Description                                                                       |
+| ---------------- | ------- | --------------------------------------------------------------------------------- |
+| `--text`       | —      | Text to analyze (omit to read from `--file` or stdin)                           |
+| `--file`       | —      | Read input text from a file                                                       |
+| `--onnx`       | off     | Use the ONNX INT8 model (`models/arabic-pii-detector-onnx`, CPU-only)           |
+| `--model`      | auto    | Override the model path (defaults to the PyTorch or ONNX dir based on `--onnx`) |
+| `--device`     | auto    | `cuda` / `cpu` (PyTorch backend only)                                         |
+| `--max-length` | `256` | Max input tokens                                                                  |
+| `--pretty`     | off     | Pretty-print the JSON output                                                      |
 
 > The ONNX backend requires `optimum[onnxruntime]` (already in `requirements.txt`) and is
 > imported lazily, so PyTorch-only users don't need it installed.
@@ -146,12 +146,12 @@ redacted output, detected entities (with confidence and offsets), and the infere
 
 Endpoints:
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/` | Web UI |
-| `POST` | `/detect` | `{"text": "...", "max_length": 256}` → `{redacted_text, entities[], inference_ms}` |
-| `GET` | `/examples` | Built-in test examples |
-| `GET` | `/health` | Active backend + model path |
+| Method   | Path          | Description                                                                             |
+| -------- | ------------- | --------------------------------------------------------------------------------------- |
+| `GET`  | `/`         | Web UI                                                                                  |
+| `POST` | `/detect`   | `{"text": "...", "max_length": 256}` → `{redacted_text, entities[], inference_ms}` |
+| `GET`  | `/examples` | Built-in test examples                                                                  |
+| `GET`  | `/health`   | Active backend + model path                                                             |
 
 ```bash
 curl -X POST http://127.0.0.1:8000/detect \
@@ -170,7 +170,7 @@ Data is generated **synthetically** by `scripts/prepare_data.py` using:
 1. **Template-based generation** (75% of examples): ~130 Arabic + mixed sentence templates covering single-entity, multi-entity, code-switched, and Algerian dialect cases.
 2. **Realistic value pools** (`scripts/entity_pools.py`):
 
-   - **Names**: Arabic (MSA + Gulf + Egyptian + Algerian) + Berber-influenced names + French-influenced transliterations (Yazid, Sofiane, Benali, Zerrouki…)
+   - **Names**: Arabic (MSA + Gulf + Egyptian + Algerian) + Berber-influenced names
    - **Phones**: Egyptian (010/011/012/015), Saudi (+966 5XX), UAE (+971 5X), **Algerian (+213 5XX/6XX/7XX or local 05/06/07)**, random spacing/dashes, 30% Arabic Indic digit conversion
    - **IBANs**: Valid mod-97 checksums for EG/SA/AE/JO/KW/QA/BH/**DZ**
    - **Emails**: Realistic user@domain , includes `.dz`, `.fr`, `yahoo.fr`, `hotmail.fr`, `univ-alger.dz`
@@ -201,7 +201,7 @@ Data is generated **synthetically** by `scripts/prepare_data.py` using:
 | NER track record  | ✓                    | ✓                  | ✓            | ✓                |
 | Safetensors       | ✓                    | ✓                  | ✗            | ✓                |
 
-**Why not bert-large?** During experimentation, `aubmindlab/bert-large-arabertv02` (340M params) achieved F1=0.9581 but failed the CPU latency target (p95=239ms with ONNX INT8). bert-base achieves  p95=7.97ms on GPU and  ~60–90ms on CPU with ONNX INT8 — comfortably within the 150ms budget.
+**Why not bert-large?** During experimentation, `aubmindlab/bert-large-arabertv02` (340M params) achieved F1=0.9581 but failed the CPU latency target (p95=239ms with ONNX INT8). bert-base achieves  p95=7.97ms on GPU and  ~60–90ms on CPU with ONNX INT8 comfortably within the 150ms budget.
 
 **Why not mdeberta-v3-base?** DeBERTa's disentangled attention adds CPU overhead , estimated p95 ~150–250ms, borderline at best. Not worth the complexity for marginal F1 gain.
 
